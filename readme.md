@@ -15,6 +15,8 @@ When you are ready to deploy code to the host, run the firebase deployment comma
 
 `firebase deploy`
 
+Basically, just make sure the latest version is pulled down from github before deploying.
+
 ## Contributing
 Push whatever in smaller increments if possible, I don't give a shit really
 
