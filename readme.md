@@ -20,5 +20,7 @@ Basically, just make sure the latest version is pulled down from github before d
 ## Contributing
 Push whatever in smaller increments if possible, I don't give a shit really
 
+Make sure as well that you commit any new changes and that the git working tree is clean before deploying to firebase.
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
