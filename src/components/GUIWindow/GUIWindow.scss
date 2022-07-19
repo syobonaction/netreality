@@ -1,0 +1,99 @@
+.gui_window {
+    position: absolute;
+    z-index: 1;
+    width: 20rem;
+    background-color: white;
+    border: 3px ridge lightgray;
+
+    .window_header {
+        box-sizing: border-box;
+        width: 100%;
+        height: 20px;
+        background-color: lightgrey;
+        border-bottom: 1px ridge gray;
+
+        .close_container {
+            position: relative;
+            display: inline-block;
+            box-sizing: border-box;
+            height: 20px;
+            width: 20px;
+            padding: 3px;
+
+            .close_button {
+                position: relative;
+                cursor: pointer;
+                box-sizing: border-box;
+                height: 100%;
+                width: 100%;
+                border: 1px ridge gray;
+
+                &:before {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    color: #555;
+                    content: "\00d7";
+                    text-align: center;
+                    line-height: 11px;
+                }
+
+                &:active {
+                    background-color: darkgrey;
+
+                    &:before {
+                        line-height: 12px;
+                        border-top: 1px solid #555;
+                        border-left: 1px solid #555;
+                    }
+                }
+
+            }
+            
+        }
+
+        .bar_container {
+            position: relative;
+            display: inline-block;
+            box-sizing: border-box;
+            width: calc(100% - 20px);
+            height: inherit;
+            padding: 5px 10px;
+
+            .bar {
+                margin: 0 auto;
+                cursor: grab;
+                height: 100%;
+                box-sizing: border-box;
+                border-top: 2px groove #bbb;
+                border-bottom: 2px groove #bbb;
+            }
+        }
+    }
+
+    .window_content {
+        position: relative;
+        width: auto;
+        padding: 5px;
+
+        h1 {
+            font-family: helvetica, sans-serif;
+            font-size: 1rem;
+        }
+
+        .image_container {
+            img {
+                width: 100%;
+            }
+        }
+    }
+
+    .window_resize {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        bottom: -5px;
+        right: -5px;
+        cursor: nwse-resize;
+    }
+}

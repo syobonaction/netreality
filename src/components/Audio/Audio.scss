@@ -1,0 +1,14 @@
+.audio_container {
+    position: relative;
+    box-sizing: border-box;
+    background-color: lightgray;
+
+    .audio_title {
+        font-family: 'Lucida Console', 'Lucida Sans Regular', sans-serif;
+        font-size: 0.8rem;
+    }
+
+    .audio_controls {
+        text-align: center;
+    }
+}

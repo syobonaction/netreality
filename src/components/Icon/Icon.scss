@@ -1,0 +1,24 @@
+.icon_container {
+    font-family: 'Lucida Console', 'Lucida Sans Regular', sans-serif;
+    position: absolute;
+    color: white;
+    width: 80px;
+    text-align: center;
+    font-size: 0.8rem;
+
+    &:after {
+        position: absolute;
+        border: 5px solid red;
+        width: 100%;
+        height: 100%;
+        background-color: blue;
+    }
+
+    &:active {
+        border: 1px dashed gray;
+    }
+
+    .icon_text {
+        margin-top: 5px;
+    }
+}
