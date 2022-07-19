@@ -6,7 +6,7 @@ function App() {
   return (
     <div>
         <p>Test</p>
-        <GUIWindow />
+        <GUIWindow id="one"/>
     </div>
   );
 }

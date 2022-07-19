@@ -1,16 +1,20 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/index.js',
-    mode: "production",
+    context: __dirname + '/src',
+    entry: './index.js',
+    mode: 'development',
     output: {
         filename: 'main.js',
         path: path.resolve(__dirname, 'public'),
     },
     devtool: 'source-map',
-    devServer:{
-        contentBase: 'public',
-        watchContentBase: true,
+    devServer: {
+        static: {
+            directory: path.join(__dirname, 'public'),
+        },
+        compress: true,
+        port: 9000,
     },
     module: {
         rules: [
