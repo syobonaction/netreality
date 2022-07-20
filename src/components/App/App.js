@@ -7,7 +7,6 @@ import './App.css';
 function App() {
   return (
     <div>
-        <p>Test</p>
         <GUIWindow 
             width="500"
             height="800"
@@ -20,7 +19,7 @@ function App() {
                     <img src="img/birds.gif"/>
                 </div>
                 <div className="window_text">
-                    Birds
+                    I hear the bird's singing in the courtyard. Suddenly, I want to go outside.
                 </div>
             </div>
             }
@@ -31,6 +30,7 @@ function App() {
         />
         <GUIWindow 
             width="300"
+            height="100"
             top="120px"
             left="600px"
             bgcolor="lightgray"

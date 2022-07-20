@@ -29,7 +29,6 @@ function Audio(props) {
     }
 
     useEffect(() => {
-        console.log('useEffect');
         audioPlayer = document.getElementById('audio_player');
     });
 

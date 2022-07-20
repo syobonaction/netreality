@@ -22,7 +22,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function App() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Test"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GUIWindow_GUIWindow__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GUIWindow_GUIWindow__WEBPACK_IMPORTED_MODULE_1__["default"], {
     width: "500",
     height: "800",
     top: "150px",
@@ -33,12 +33,13 @@ function App() {
       src: "img/birds.gif"
     })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       className: "window_text"
-    }, "Birds"))
+    }, "I hear the bird's singing in the courtyard. Suddenly, I want to go outside."))
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Icon_Icon__WEBPACK_IMPORTED_MODULE_2__["default"], {
     imageUrl: "./img/icons/blog.png",
     name: "Sismondi's Blog"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GUIWindow_GUIWindow__WEBPACK_IMPORTED_MODULE_1__["default"], {
     width: "300",
+    height: "100",
     top: "120px",
     left: "600px",
     bgcolor: "lightgray",
@@ -99,7 +100,6 @@ function Audio(props) {
   };
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    console.log('useEffect');
     audioPlayer = document.getElementById('audio_player');
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -150,18 +150,106 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
 function GUIWindow(props) {
-  var styles = {
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    width: parseInt(props.width),
+    height: parseInt(props.height)
+  }),
+      _useState2 = _slicedToArray(_useState, 2),
+      dimensions = _useState2[0],
+      setDimensions = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      resizing = _useState4[0],
+      setResizing = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    width: "12px",
+    height: "12px",
+    bottom: "-5px",
+    right: "-5px"
+  }),
+      _useState6 = _slicedToArray(_useState5, 2),
+      resizeBoxDimensions = _useState6[0],
+      setResizeBoxDimensions = _useState6[1];
+
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    x: 0,
+    y: 0
+  }),
+      _useState8 = _slicedToArray(_useState7, 2),
+      mousePosition = _useState8[0],
+      setMousePosition = _useState8[1];
+
+  var guiStyles = {
     left: props.left,
     top: props.top,
-    backgroundColor: props.bgcolor
+    width: dimensions.width,
+    height: dimensions.height,
+    backgroundColor: props.bgcolor,
+    zIndex: 1
+  };
+  var resizeStyles = {
+    width: resizeBoxDimensions.width,
+    height: resizeBoxDimensions.height,
+    bottom: resizeBoxDimensions.bottom,
+    right: resizeBoxDimensions.right
   };
 
-  var handleWindowResize = function handleWindowResize() {//const resizeHook = document.getElementsByClassName()
+  var handleResizeClick = function handleResizeClick(e) {
+    setResizing(true);
+    setMousePosition({
+      x: e.clientX,
+      y: e.clientY
+    });
+    setResizeBoxDimensions({
+      width: "200px",
+      height: "200px",
+      bottom: "-100px",
+      right: "-100px"
+    });
   };
+
+  var handleWindowResize = function handleWindowResize(e) {
+    if (resizing) {
+      setDimensions({
+        width: dimensions.width += e.clientX - mousePosition.x,
+        height: dimensions.height += e.clientY - mousePosition.y
+      });
+      setMousePosition({
+        x: e.clientX,
+        y: e.clientY
+      });
+    }
+  };
+
+  var handleResizeMouseUpOut = function handleResizeMouseUpOut() {
+    setResizing(false);
+    setResizeBoxDimensions({
+      width: "12px",
+      height: "12px",
+      bottom: "-5px",
+      right: "-5px"
+    });
+  };
+
+  var handleWindowClick = function handleWindowClick() {};
 
   var handleWindowClose = function handleWindowClose() {};
 
@@ -169,7 +257,10 @@ function GUIWindow(props) {
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "gui_window",
-    style: _objectSpread({}, styles)
+    style: _objectSpread({}, guiStyles),
+    onClick: handleWindowClick,
+    onMouseUp: handleResizeMouseUpOut,
+    onMouseOut: handleResizeMouseUpOut
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "window_header"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -186,7 +277,9 @@ function GUIWindow(props) {
     className: "window_content"
   }, props.content), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "window_resize",
-    onMouseDown: handleWindowResize
+    style: _objectSpread({}, resizeStyles),
+    onMouseDown: handleResizeClick,
+    onMouseMove: handleWindowResize
   }));
 }
 
@@ -262,7 +355,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "@charset \"UTF-8\";\n.gui_window {\n  position: absolute;\n  z-index: 1;\n  width: 20rem;\n  background-color: white;\n  border: 3px ridge lightgray;\n}\n.gui_window .window_header {\n  box-sizing: border-box;\n  width: 100%;\n  height: 20px;\n  background-color: lightgrey;\n  border-bottom: 1px ridge gray;\n}\n.gui_window .window_header .close_container {\n  position: relative;\n  display: inline-block;\n  box-sizing: border-box;\n  height: 20px;\n  width: 20px;\n  padding: 3px;\n}\n.gui_window .window_header .close_container .close_button {\n  position: relative;\n  cursor: pointer;\n  box-sizing: border-box;\n  height: 100%;\n  width: 100%;\n  border: 1px ridge gray;\n}\n.gui_window .window_header .close_container .close_button:before {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  color: #555;\n  content: \"×\";\n  text-align: center;\n  line-height: 11px;\n}\n.gui_window .window_header .close_container .close_button:active {\n  background-color: darkgrey;\n}\n.gui_window .window_header .close_container .close_button:active:before {\n  line-height: 12px;\n  border-top: 1px solid #555;\n  border-left: 1px solid #555;\n}\n.gui_window .window_header .bar_container {\n  position: relative;\n  display: inline-block;\n  box-sizing: border-box;\n  width: calc(100% - 20px);\n  height: inherit;\n  padding: 5px 10px;\n}\n.gui_window .window_header .bar_container .bar {\n  margin: 0 auto;\n  cursor: grab;\n  height: 100%;\n  box-sizing: border-box;\n  border-top: 2px groove #bbb;\n  border-bottom: 2px groove #bbb;\n}\n.gui_window .window_content {\n  position: relative;\n  width: auto;\n  padding: 5px;\n}\n.gui_window .window_content h1 {\n  font-family: helvetica, sans-serif;\n  font-size: 1rem;\n}\n.gui_window .window_content .image_container img {\n  width: 100%;\n}\n.gui_window .window_resize {\n  position: absolute;\n  width: 12px;\n  height: 12px;\n  bottom: -5px;\n  right: -5px;\n  cursor: nwse-resize;\n}", "",{"version":3,"sources":["webpack://./components/GUIWindow/GUIWindow.scss"],"names":[],"mappings":"AAAA,gBAAgB;AAAhB;EACI,kBAAA;EACA,UAAA;EACA,YAAA;EACA,uBAAA;EACA,2BAAA;AAEJ;AAAI;EACI,sBAAA;EACA,WAAA;EACA,YAAA;EACA,2BAAA;EACA,6BAAA;AAER;AAAQ;EACI,kBAAA;EACA,qBAAA;EACA,sBAAA;EACA,YAAA;EACA,WAAA;EACA,YAAA;AAEZ;AAAY;EACI,kBAAA;EACA,eAAA;EACA,sBAAA;EACA,YAAA;EACA,WAAA;EACA,sBAAA;AAEhB;AAAgB;EACI,kBAAA;EACA,WAAA;EACA,YAAA;EACA,WAAA;EACA,YAAA;EACA,kBAAA;EACA,iBAAA;AAEpB;AACgB;EACI,0BAAA;AACpB;AACoB;EACI,iBAAA;EACA,0BAAA;EACA,2BAAA;AACxB;AAOQ;EACI,kBAAA;EACA,qBAAA;EACA,sBAAA;EACA,wBAAA;EACA,eAAA;EACA,iBAAA;AALZ;AAOY;EACI,cAAA;EACA,YAAA;EACA,YAAA;EACA,sBAAA;EACA,2BAAA;EACA,8BAAA;AALhB;AAUI;EACI,kBAAA;EACA,WAAA;EACA,YAAA;AARR;AAUQ;EACI,kCAAA;EACA,eAAA;AARZ;AAYY;EACI,WAAA;AAVhB;AAeI;EACI,kBAAA;EACA,WAAA;EACA,YAAA;EACA,YAAA;EACA,WAAA;EACA,mBAAA;AAbR","sourcesContent":[".gui_window {\r\n    position: absolute;\r\n    z-index: 1;\r\n    width: 20rem;\r\n    background-color: white;\r\n    border: 3px ridge lightgray;\r\n\r\n    .window_header {\r\n        box-sizing: border-box;\r\n        width: 100%;\r\n        height: 20px;\r\n        background-color: lightgrey;\r\n        border-bottom: 1px ridge gray;\r\n\r\n        .close_container {\r\n            position: relative;\r\n            display: inline-block;\r\n            box-sizing: border-box;\r\n            height: 20px;\r\n            width: 20px;\r\n            padding: 3px;\r\n\r\n            .close_button {\r\n                position: relative;\r\n                cursor: pointer;\r\n                box-sizing: border-box;\r\n                height: 100%;\r\n                width: 100%;\r\n                border: 1px ridge gray;\r\n\r\n                &:before {\r\n                    position: absolute;\r\n                    width: 100%;\r\n                    height: 100%;\r\n                    color: #555;\r\n                    content: \"\\00d7\";\r\n                    text-align: center;\r\n                    line-height: 11px;\r\n                }\r\n\r\n                &:active {\r\n                    background-color: darkgrey;\r\n\r\n                    &:before {\r\n                        line-height: 12px;\r\n                        border-top: 1px solid #555;\r\n                        border-left: 1px solid #555;\r\n                    }\r\n                }\r\n\r\n            }\r\n            \r\n        }\r\n\r\n        .bar_container {\r\n            position: relative;\r\n            display: inline-block;\r\n            box-sizing: border-box;\r\n            width: calc(100% - 20px);\r\n            height: inherit;\r\n            padding: 5px 10px;\r\n\r\n            .bar {\r\n                margin: 0 auto;\r\n                cursor: grab;\r\n                height: 100%;\r\n                box-sizing: border-box;\r\n                border-top: 2px groove #bbb;\r\n                border-bottom: 2px groove #bbb;\r\n            }\r\n        }\r\n    }\r\n\r\n    .window_content {\r\n        position: relative;\r\n        width: auto;\r\n        padding: 5px;\r\n\r\n        h1 {\r\n            font-family: helvetica, sans-serif;\r\n            font-size: 1rem;\r\n        }\r\n\r\n        .image_container {\r\n            img {\r\n                width: 100%;\r\n            }\r\n        }\r\n    }\r\n\r\n    .window_resize {\r\n        position: absolute;\r\n        width: 12px;\r\n        height: 12px;\r\n        bottom: -5px;\r\n        right: -5px;\r\n        cursor: nwse-resize;\r\n    }\r\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "@charset \"UTF-8\";\n.gui_window {\n  position: absolute;\n  z-index: 1;\n  width: 20rem;\n  background-color: white;\n  border: 3px ridge lightgray;\n}\n.gui_window .window_header {\n  box-sizing: border-box;\n  width: 100%;\n  height: 20px;\n  background-color: lightgrey;\n  border-bottom: 1px ridge gray;\n}\n.gui_window .window_header .close_container {\n  position: relative;\n  display: inline-block;\n  box-sizing: border-box;\n  height: 20px;\n  width: 20px;\n  padding: 3px;\n}\n.gui_window .window_header .close_container .close_button {\n  position: relative;\n  cursor: pointer;\n  box-sizing: border-box;\n  height: 100%;\n  width: 100%;\n  border: 1px ridge gray;\n}\n.gui_window .window_header .close_container .close_button:before {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  color: #555;\n  content: \"×\";\n  text-align: center;\n  line-height: 11px;\n}\n.gui_window .window_header .close_container .close_button:active {\n  background-color: darkgrey;\n}\n.gui_window .window_header .close_container .close_button:active:before {\n  line-height: 12px;\n  border-top: 1px solid #555;\n  border-left: 1px solid #555;\n}\n.gui_window .window_header .bar_container {\n  position: relative;\n  display: inline-block;\n  box-sizing: border-box;\n  width: calc(100% - 20px);\n  height: inherit;\n  padding: 5px 10px;\n}\n.gui_window .window_header .bar_container .bar {\n  margin: 0 auto;\n  cursor: grab;\n  height: 100%;\n  box-sizing: border-box;\n  border-top: 2px groove #bbb;\n  border-bottom: 2px groove #bbb;\n}\n.gui_window .window_header .bar_container .bar:active {\n  cursor: grabbing;\n}\n.gui_window .window_content {\n  position: relative;\n  width: auto;\n  padding: 5px;\n}\n.gui_window .window_content h1 {\n  font-family: helvetica, sans-serif;\n  font-size: 1rem;\n}\n.gui_window .window_content .image_container img {\n  width: 100%;\n}\n.gui_window .window_resize {\n  position: absolute;\n  cursor: nwse-resize;\n}", "",{"version":3,"sources":["webpack://./components/GUIWindow/GUIWindow.scss"],"names":[],"mappings":"AAAA,gBAAgB;AAAhB;EACI,kBAAA;EACA,UAAA;EACA,YAAA;EACA,uBAAA;EACA,2BAAA;AAEJ;AAAI;EACI,sBAAA;EACA,WAAA;EACA,YAAA;EACA,2BAAA;EACA,6BAAA;AAER;AAAQ;EACI,kBAAA;EACA,qBAAA;EACA,sBAAA;EACA,YAAA;EACA,WAAA;EACA,YAAA;AAEZ;AAAY;EACI,kBAAA;EACA,eAAA;EACA,sBAAA;EACA,YAAA;EACA,WAAA;EACA,sBAAA;AAEhB;AAAgB;EACI,kBAAA;EACA,WAAA;EACA,YAAA;EACA,WAAA;EACA,YAAA;EACA,kBAAA;EACA,iBAAA;AAEpB;AACgB;EACI,0BAAA;AACpB;AACoB;EACI,iBAAA;EACA,0BAAA;EACA,2BAAA;AACxB;AAOQ;EACI,kBAAA;EACA,qBAAA;EACA,sBAAA;EACA,wBAAA;EACA,eAAA;EACA,iBAAA;AALZ;AAOY;EACI,cAAA;EACA,YAAA;EACA,YAAA;EACA,sBAAA;EACA,2BAAA;EACA,8BAAA;AALhB;AAOgB;EACI,gBAAA;AALpB;AAWI;EACI,kBAAA;EACA,WAAA;EACA,YAAA;AATR;AAWQ;EACI,kCAAA;EACA,eAAA;AATZ;AAaY;EACI,WAAA;AAXhB;AAgBI;EACI,kBAAA;EACA,mBAAA;AAdR","sourcesContent":[".gui_window {\r\n    position: absolute;\r\n    z-index: 1;\r\n    width: 20rem;\r\n    background-color: white;\r\n    border: 3px ridge lightgray;\r\n\r\n    .window_header {\r\n        box-sizing: border-box;\r\n        width: 100%;\r\n        height: 20px;\r\n        background-color: lightgrey;\r\n        border-bottom: 1px ridge gray;\r\n\r\n        .close_container {\r\n            position: relative;\r\n            display: inline-block;\r\n            box-sizing: border-box;\r\n            height: 20px;\r\n            width: 20px;\r\n            padding: 3px;\r\n\r\n            .close_button {\r\n                position: relative;\r\n                cursor: pointer;\r\n                box-sizing: border-box;\r\n                height: 100%;\r\n                width: 100%;\r\n                border: 1px ridge gray;\r\n\r\n                &:before {\r\n                    position: absolute;\r\n                    width: 100%;\r\n                    height: 100%;\r\n                    color: #555;\r\n                    content: \"\\00d7\";\r\n                    text-align: center;\r\n                    line-height: 11px;\r\n                }\r\n\r\n                &:active {\r\n                    background-color: darkgrey;\r\n\r\n                    &:before {\r\n                        line-height: 12px;\r\n                        border-top: 1px solid #555;\r\n                        border-left: 1px solid #555;\r\n                    }\r\n                }\r\n\r\n            }\r\n            \r\n        }\r\n\r\n        .bar_container {\r\n            position: relative;\r\n            display: inline-block;\r\n            box-sizing: border-box;\r\n            width: calc(100% - 20px);\r\n            height: inherit;\r\n            padding: 5px 10px;\r\n\r\n            .bar {\r\n                margin: 0 auto;\r\n                cursor: grab;\r\n                height: 100%;\r\n                box-sizing: border-box;\r\n                border-top: 2px groove #bbb;\r\n                border-bottom: 2px groove #bbb;\r\n\r\n                &:active {\r\n                    cursor: grabbing;\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n    .window_content {\r\n        position: relative;\r\n        width: auto;\r\n        padding: 5px;\r\n\r\n        h1 {\r\n            font-family: helvetica, sans-serif;\r\n            font-size: 1rem;\r\n        }\r\n\r\n        .image_container {\r\n            img {\r\n                width: 100%;\r\n            }\r\n        }\r\n    }\r\n\r\n    .window_resize {\r\n        position: absolute;\r\n        cursor: nwse-resize;\r\n    }\r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 

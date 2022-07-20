@@ -1,6 +1,6 @@
 # NetReality
 
-In the begin
+Shoulda never been born
 
 ## Installation
 
@@ -8,7 +8,13 @@ Run the firebase login command
 
 `firebase login`
 
+Install needed packages with `npm i` and add sparingly
+
 ## Usage
+
+To run the dev server, use `npx webpack serve`
+
+## Deploying
 
 Pushing to git will not automatically update the host.
 When you are ready to deploy code to the host, first make sure of the following:
