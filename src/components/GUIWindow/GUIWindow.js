@@ -1,16 +1,24 @@
-import React, { useState }  from 'react';
+import React, { useState, useRef }  from 'react';
 import './GUIWindow.scss';
 
 function GUIWindow(props) {
     const minWidth = parseInt(props.width);
     const minHeight = parseInt(props.height);
 
+    const guiWindow = useRef(null);
+
     const [dimensions, setDimensions] = useState({
         width: minWidth,
         height: minHeight
     });
 
-    const [resizing, setResizing] = useState(false);
+    const [position, setPosition] = useState({
+        x: parseInt(props.left),
+        y: parseInt(props.top)
+    });
+
+    const [isResizing, setIsResizing] = useState(false);
+    const [isMoving, setIsMoving] = useState(false);
 
     const [resizeStyles, setResizeStyles] = useState({
         width: "12px",
@@ -25,30 +33,31 @@ function GUIWindow(props) {
     });
 
     const guiStyles = {
-        left: props.left,
-        top: props.top,
+        left: position.x,
+        top: position.y,
         width: dimensions.width,
         height: dimensions.height,
         backgroundColor: props.bgcolor,
+        userSelect: (isResizing || isMoving) ? "none" : "initial",
         zIndex: 2
-    }
+    };
 
     const handleResizeClick = e => {
-        setResizing(true);
+        setIsResizing(true);
         setMousePosition({
             x: e.clientX,
             y: e.clientY
         });
         setResizeStyles({
             width: "100vw",
-            height: "100vw",
+            height: "100vh",
             bottom: "-400px",
             right: "-400px"
         });
     };
     
     const handleWindowResize = e => {
-        if(resizing) {
+        if(isResizing) {
             const newWidth = dimensions.width += (e.clientX - mousePosition.x);
             const newHeight = dimensions.height += (e.clientY - mousePosition.y);
             setDimensions({
@@ -62,8 +71,9 @@ function GUIWindow(props) {
         }
     };
 
-    const handleResizeMouseUpOut = () => {
-        setResizing(false);
+    const handleMouseUpOut = () => {
+        setIsResizing(false);
+        setIsMoving(false);
         setResizeStyles({
             width: "12px",
             height: "12px",
@@ -72,26 +82,42 @@ function GUIWindow(props) {
         });
     };
 
-    const handleWindowClick = () => {
-        
+    const handleDragBarClick = e => {
+        setIsMoving(true);
+        setMousePosition({
+            x: e.clientX,
+            y: e.clientY
+        });
+    };
+
+    const handleWindowMove = e => {
+        if(isMoving) {
+            const newPositionX = position.x += (e.clientX - mousePosition.x);
+            const newPositionY = position.y += (e.clientY - mousePosition.y);
+            setPosition({
+                x: newPositionX,
+                y: newPositionY
+            });
+            setMousePosition({
+                x: e.clientX,
+                y: e.clientY
+            });
+        }
     };
     
     const handleWindowClose = () => {
-        
-    };
-
-    const handleWindowDrag = () => {
-
+        guiWindow.current.remove();
     };
 
     return (
-        <div className="gui_window" style={{...guiStyles}} onClick={handleWindowClick} onMouseUp={handleResizeMouseUpOut} onMouseOut={handleResizeMouseUpOut}>    
+        <div className="gui_window" ref={guiWindow} style={{...guiStyles}} onMouseUp={handleMouseUpOut} onMouseOut={handleMouseUpOut}>    
             <div className="window_header">
                 <div className='close_container'>
                     <div className="close_button" onMouseUp={handleWindowClose}></div>
                 </div>
-                <div className="bar_container">
-                    <div className="bar" onMouseDown={handleWindowDrag}></div>
+                <div className="bar_container" onMouseDown={handleDragBarClick} onMouseMove={handleWindowMove}>
+                    <div className="bar_grabber_hook" onMouseDown={handleDragBarClick}></div>
+                    <div className="bar"></div>
                 </div>
             </div>
             <div className="window_content">
