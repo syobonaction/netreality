@@ -166,9 +166,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function GUIWindow(props) {
+  var minWidth = parseInt(props.width);
+  var minHeight = parseInt(props.height);
+
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
-    width: parseInt(props.width),
-    height: parseInt(props.height)
+    width: minWidth,
+    height: minHeight
   }),
       _useState2 = _slicedToArray(_useState, 2),
       dimensions = _useState2[0],
@@ -186,8 +189,8 @@ function GUIWindow(props) {
     right: "-5px"
   }),
       _useState6 = _slicedToArray(_useState5, 2),
-      resizeBoxDimensions = _useState6[0],
-      setResizeBoxDimensions = _useState6[1];
+      resizeStyles = _useState6[0],
+      setResizeStyles = _useState6[1];
 
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
     x: 0,
@@ -205,12 +208,6 @@ function GUIWindow(props) {
     backgroundColor: props.bgcolor,
     zIndex: 1
   };
-  var resizeStyles = {
-    width: resizeBoxDimensions.width,
-    height: resizeBoxDimensions.height,
-    bottom: resizeBoxDimensions.bottom,
-    right: resizeBoxDimensions.right
-  };
 
   var handleResizeClick = function handleResizeClick(e) {
     setResizing(true);
@@ -218,19 +215,22 @@ function GUIWindow(props) {
       x: e.clientX,
       y: e.clientY
     });
-    setResizeBoxDimensions({
-      width: "200px",
-      height: "200px",
-      bottom: "-100px",
-      right: "-100px"
+    setResizeStyles({
+      width: "100vw",
+      height: "100vw",
+      bottom: "-400px",
+      right: "-400px"
     });
   };
 
   var handleWindowResize = function handleWindowResize(e) {
     if (resizing) {
+      var guiWindowWidth = e.currentTarget.parentElement.offsetWidth;
+      var newWidth = dimensions.width += e.clientX - mousePosition.x;
+      var newHeight = dimensions.height += e.clientY - mousePosition.y;
       setDimensions({
-        width: dimensions.width += e.clientX - mousePosition.x,
-        height: dimensions.height += e.clientY - mousePosition.y
+        width: newWidth <= minWidth ? minWidth : newWidth,
+        height: newHeight <= minHeight ? minHeight : newHeight
       });
       setMousePosition({
         x: e.clientX,
@@ -241,7 +241,7 @@ function GUIWindow(props) {
 
   var handleResizeMouseUpOut = function handleResizeMouseUpOut() {
     setResizing(false);
-    setResizeBoxDimensions({
+    setResizeStyles({
       width: "12px",
       height: "12px",
       bottom: "-5px",

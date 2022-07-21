@@ -2,14 +2,17 @@ import React, { useState }  from 'react';
 import './GUIWindow.scss';
 
 function GUIWindow(props) {
+    const minWidth = parseInt(props.width);
+    const minHeight = parseInt(props.height);
+
     const [dimensions, setDimensions] = useState({
-        width: parseInt(props.width),
-        height: parseInt(props.height)
+        width: minWidth,
+        height: minHeight
     });
 
     const [resizing, setResizing] = useState(false);
 
-    const [resizeBoxDimensions, setResizeBoxDimensions] = useState({
+    const [resizeStyles, setResizeStyles] = useState({
         width: "12px",
         height: "12px",
         bottom: "-5px",
@@ -30,32 +33,28 @@ function GUIWindow(props) {
         zIndex: 1
     }
 
-    const resizeStyles = {
-        width: resizeBoxDimensions.width,
-        height: resizeBoxDimensions.height,
-        bottom: resizeBoxDimensions.bottom,
-        right: resizeBoxDimensions.right
-    }
-
     const handleResizeClick = e => {
         setResizing(true);
         setMousePosition({
             x: e.clientX,
             y: e.clientY
         });
-        setResizeBoxDimensions({
-            width: "200px",
-            height: "200px",
-            bottom: "-100px",
-            right: "-100px"
+        setResizeStyles({
+            width: "100vw",
+            height: "100vw",
+            bottom: "-400px",
+            right: "-400px"
         });
     };
     
     const handleWindowResize = e => {
         if(resizing) {
+            const guiWindowWidth = e.currentTarget.parentElement.offsetWidth;
+            const newWidth = dimensions.width += (e.clientX - mousePosition.x);
+            const newHeight = dimensions.height += (e.clientY - mousePosition.y);
             setDimensions({
-                width: dimensions.width += (e.clientX - mousePosition.x),
-                height: dimensions.height += (e.clientY - mousePosition.y)
+                width: newWidth <= minWidth ? minWidth : newWidth,
+                height: newHeight <= minHeight ? minHeight : newHeight
             });
             setMousePosition({
                 x: e.clientX,
@@ -66,7 +65,7 @@ function GUIWindow(props) {
 
     const handleResizeMouseUpOut = () => {
         setResizing(false);
-        setResizeBoxDimensions({
+        setResizeStyles({
             width: "12px",
             height: "12px",
             bottom: "-5px",
