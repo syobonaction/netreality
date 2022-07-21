@@ -1,4 +1,4 @@
-import React, { useState, useRef }  from 'react';
+import React, { useState, useRef, useEffect }  from 'react';
 import './GUIWindow.scss';
 
 function GUIWindow(props) {
@@ -7,10 +7,24 @@ function GUIWindow(props) {
 
     const guiWindow = useRef(null);
 
+    useEffect(() => {
+        if (guiWindow && guiWindow.current) {
+            console.log('adding');
+            document.addEventListener('mousedown', handleWindowClickOutisde);
+      
+            return () => {
+                console.log('removed the listener');
+                document.removeEventListener('mousedown', handleWindowClickOutisde);
+            }
+          }
+    }, []);
+
     const [dimensions, setDimensions] = useState({
         width: minWidth,
         height: minHeight
     });
+
+    const [zIndex, setZIndex] = useState(3);
 
     const [position, setPosition] = useState({
         x: parseInt(props.left),
@@ -39,7 +53,17 @@ function GUIWindow(props) {
         height: dimensions.height,
         backgroundColor: props.bgcolor,
         userSelect: (isResizing || isMoving) ? "none" : "initial",
-        zIndex: 2
+        zIndex: zIndex
+    };
+
+    const handleWindowClickOutisde = e => {
+        if(guiWindow.current) {
+            if(!guiWindow.current.contains(e.target)) {
+                setZIndex(2);
+            } else {
+                setZIndex(3);
+            } 
+        } 
     };
 
     const handleResizeClick = e => {
@@ -105,15 +129,11 @@ function GUIWindow(props) {
         }
     };
     
-    const handleWindowClose = () => {
-        guiWindow.current.remove();
-    };
-
     return (
         <div className="gui_window" ref={guiWindow} style={{...guiStyles}} onMouseUp={handleMouseUpOut} onMouseOut={handleMouseUpOut}>    
             <div className="window_header">
                 <div className='close_container'>
-                    <div className="close_button" onMouseUp={handleWindowClose}></div>
+                    <div className="close_button" onMouseUp={props.onClose}></div>
                 </div>
                 <div className="bar_container" onMouseDown={handleDragBarClick} onMouseMove={handleWindowMove}>
                     <div className="bar_grabber_hook" onMouseDown={handleDragBarClick}></div>
