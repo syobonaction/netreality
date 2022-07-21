@@ -1,54 +1,75 @@
-import React, { useEffect }  from 'react';
+import React, { useState, useRef }  from 'react';
 import './Audio.scss';
 
 function Audio(props) {
-    let audioPlayer = {};
+    const audioPlayer = useRef(null);
+    const musicList = props.musicList;
+
+    const getSong = (musicList) => {
+        const index = Math.floor(Math.random() * musicList.length);
+
+        return musicList[index];
+    };
+
+    const [currentSong, setCurrentSong] = useState(getSong(musicList));
+    
     const handlePlayClick = () => {
-        audioPlayer.play();
-    }
+        audioPlayer.current.play();
+    };
 
     const handlePauseClick = () => {
-        audioPlayer.pause();
-    }
+        audioPlayer.current.pause();
+    };
 
-    const handleVolumeClick = (type) => {
-        switch(type) {
-            case "inc":
-                if(audioPlayer.volume < 1) {
-                    audioPlayer.volume += 0.1;
-                }   
-                break;
-            case "dec":
-                if(audioPlayer.volume > 0.1) {
-                    audioPlayer.volume -= 0.1;
-                }   
-                break;
-            default:
-                break;
+    const handleNextClick = () => {
+        if(currentSong.index === musicList.length - 1) {
+            setCurrentSong(musicList[0]);
+        } else {
+            setCurrentSong(musicList[currentSong.index + 1]);
         }
-    }
+        audioPlayer.current.load();
+    };
 
-    useEffect(() => {
-        audioPlayer = document.getElementById('audio_player');
-    });
+    const handleBackClick = () => {
+        if(currentSong.index === 0) {
+            setCurrentSong(musicList[musicList.length - 1]);
+        } else {
+            setCurrentSong(musicList[0]);
+        }
+        audioPlayer.current.load();
+    };
+
+    const handleVolumeIncreaseClick = () => {
+        if(audioPlayer.current.volume < 1) {
+            audioPlayer.current.volume += 0.1;
+        }
+    };
+
+    const handleVolumeDecreaseClick = (type) => {
+        if(audioPlayer.current.volume > 0.1) {
+            audioPlayer.current.volume -= 0.1;
+        }
+    };
 
     return (
         <div className="audio_container">
             <div className="audio_title">
-                <marquee>{props.songTitle}</marquee>
+                <marquee>{currentSong.title}</marquee>
             </div>
-            <audio id="audio_player" autoPlay loop>
+            <audio ref={audioPlayer} autoPlay loop>
                 <source 
-                    src={props.song}
+                    src={currentSong.url}
                     type="audio/mpeg"
                 />
                 Your browser does not support the audio element.
             </audio>
             <div className="audio_controls">
                 <button onClick={handlePlayClick}>Play</button> 
-                <button onClick={handlePauseClick}>Pause</button> 
-                <button onClick={() => handleVolumeClick("inc")}>Vol +</button> 
-                <button onClick={() => handleVolumeClick("dec")}>Vol -</button>
+                <button onClick={handlePauseClick}>Pause</button>
+                <button onClick={handleBackClick}>Back</button>
+                <button onClick={handleNextClick}>Next</button>
+                <button onClick={handleVolumeIncreaseClick}>+</button> 
+                <button onClick={handleVolumeDecreaseClick}>-</button>
             </div>
         </div>
     );

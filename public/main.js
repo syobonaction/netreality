@@ -20,11 +20,36 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var musicList = [{
+  index: 0,
+  title: "GOLDEN LIVING ROOM - Breaking the Mirror of Self Reflection",
+  url: "./sounds/reflection.mp3"
+}, {
+  index: 1,
+  title: "Peter Pearson - Green Peace",
+  url: "./sounds/greenpeace.mp3"
+}, {
+  index: 2,
+  title: "松枝 賀子 - Space",
+  url: "./sounds/space.mp3"
+}, {
+  index: 3,
+  title: "Placid Angles - Ocean",
+  url: "./sounds/ocean.mp3"
+}, {
+  index: 4,
+  title: "glaciære - Sitting in the Shadow to Escape the Heat",
+  url: "./sounds/sittinginshadow.mp3"
+}, {
+  index: 5,
+  title: "Windows96 - Kylin Forest",
+  url: "./sounds/kylinforest.mp3"
+}];
 
 function App() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GUIWindow_GUIWindow__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    width: "500",
-    height: "800",
+    width: "400",
+    height: "600",
     top: "150px",
     left: "20px",
     content: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "I'm here. I'm glad you're there."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -44,8 +69,7 @@ function App() {
     left: "600px",
     bgcolor: "lightgray",
     content: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Audio_Audio__WEBPACK_IMPORTED_MODULE_3__["default"], {
-      songTitle: "GOLDEN LIVING ROOM - Breaking the Mirror of Self Reflection",
-      song: "./sounds/reflection.mp3"
+      musicList: musicList
     })
   }));
 }
@@ -64,54 +88,85 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Audio_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Audio.scss */ "./components/Audio/Audio.scss");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
 function Audio(props) {
-  var audioPlayer = {};
+  var audioPlayer = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  var musicList = props.musicList;
+
+  var getSong = function getSong(musicList) {
+    var index = Math.floor(Math.random() * musicList.length);
+    return musicList[index];
+  };
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(getSong(musicList)),
+      _useState2 = _slicedToArray(_useState, 2),
+      currentSong = _useState2[0],
+      setCurrentSong = _useState2[1];
 
   var handlePlayClick = function handlePlayClick() {
-    audioPlayer.play();
+    audioPlayer.current.play();
   };
 
   var handlePauseClick = function handlePauseClick() {
-    audioPlayer.pause();
+    audioPlayer.current.pause();
   };
 
-  var handleVolumeClick = function handleVolumeClick(type) {
-    switch (type) {
-      case "inc":
-        if (audioPlayer.volume < 1) {
-          audioPlayer.volume += 0.1;
-        }
+  var handleNextClick = function handleNextClick() {
+    if (currentSong.index === musicList.length - 1) {
+      setCurrentSong(musicList[0]);
+    } else {
+      setCurrentSong(musicList[currentSong.index + 1]);
+    }
 
-        break;
+    audioPlayer.current.load();
+  };
 
-      case "dec":
-        if (audioPlayer.volume > 0.1) {
-          audioPlayer.volume -= 0.1;
-        }
+  var handleBackClick = function handleBackClick() {
+    if (currentSong.index === 0) {
+      setCurrentSong(musicList[musicList.length - 1]);
+    } else {
+      setCurrentSong(musicList[0]);
+    }
 
-        break;
+    audioPlayer.current.load();
+  };
 
-      default:
-        break;
+  var handleVolumeIncreaseClick = function handleVolumeIncreaseClick() {
+    if (audioPlayer.current.volume < 1) {
+      audioPlayer.current.volume += 0.1;
     }
   };
 
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    audioPlayer = document.getElementById('audio_player');
-  });
+  var handleVolumeDecreaseClick = function handleVolumeDecreaseClick(type) {
+    if (audioPlayer.current.volume > 0.1) {
+      audioPlayer.current.volume -= 0.1;
+    }
+  };
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "audio_container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "audio_title"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("marquee", null, props.songTitle)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("audio", {
-    id: "audio_player",
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("marquee", null, currentSong.title)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("audio", {
+    ref: audioPlayer,
     autoPlay: true,
     loop: true
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("source", {
-    src: props.song,
+    src: currentSong.url,
     type: "audio/mpeg"
   }), "Your browser does not support the audio element."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "audio_controls"
@@ -120,14 +175,14 @@ function Audio(props) {
   }, "Play"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: handlePauseClick
   }, "Pause"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    onClick: function onClick() {
-      return handleVolumeClick("inc");
-    }
-  }, "Vol +"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    onClick: function onClick() {
-      return handleVolumeClick("dec");
-    }
-  }, "Vol -")));
+    onClick: handleBackClick
+  }, "Back"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: handleNextClick
+  }, "Next"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: handleVolumeIncreaseClick
+  }, "+"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: handleVolumeDecreaseClick
+  }, "-")));
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (Audio);
@@ -206,7 +261,7 @@ function GUIWindow(props) {
     width: dimensions.width,
     height: dimensions.height,
     backgroundColor: props.bgcolor,
-    zIndex: 1
+    zIndex: 2
   };
 
   var handleResizeClick = function handleResizeClick(e) {
@@ -225,7 +280,6 @@ function GUIWindow(props) {
 
   var handleWindowResize = function handleWindowResize(e) {
     if (resizing) {
-      var guiWindowWidth = e.currentTarget.parentElement.offsetWidth;
       var newWidth = dimensions.width += e.clientX - mousePosition.x;
       var newHeight = dimensions.height += e.clientY - mousePosition.y;
       setDimensions({

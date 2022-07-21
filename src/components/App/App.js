@@ -4,12 +4,45 @@ import Icon from '../Icon/Icon';
 import Audio from '../Audio/Audio';
 import './App.css';
 
+const musicList = [
+    {
+        index: 0,
+        title: "GOLDEN LIVING ROOM - Breaking the Mirror of Self Reflection",
+        url: "./sounds/reflection.mp3"
+    },
+    {
+        index: 1,
+        title: "Peter Pearson - Green Peace",
+        url: "./sounds/greenpeace.mp3" 
+    },
+    {
+        index: 2,
+        title: "松枝 賀子 - Space",
+        url: "./sounds/space.mp3"
+    },
+    {
+        index: 3,
+        title: "Placid Angles - Ocean",
+        url: "./sounds/ocean.mp3"
+    },
+    {
+        index: 4,
+        title: "glaciære - Sitting in the Shadow to Escape the Heat",
+        url: "./sounds/sittinginshadow.mp3"
+    },
+    {
+        index: 5,
+        title: "Windows96 - Kylin Forest",
+        url: "./sounds/kylinforest.mp3"
+    }
+];
+
 function App() {
   return (
     <div>
         <GUIWindow 
-            width="500"
-            height="800"
+            width="400"
+            height="600"
             top="150px"
             left="20px"
             content={
@@ -36,11 +69,9 @@ function App() {
             bgcolor="lightgray"
             content={
             <Audio 
-                songTitle="GOLDEN LIVING ROOM - Breaking the Mirror of Self Reflection"
-                song="./sounds/reflection.mp3"
+                musicList={musicList}
             />}>
         </GUIWindow>
-        
     </div>
   );
 }

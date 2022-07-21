@@ -30,7 +30,7 @@ function GUIWindow(props) {
         width: dimensions.width,
         height: dimensions.height,
         backgroundColor: props.bgcolor,
-        zIndex: 1
+        zIndex: 2
     }
 
     const handleResizeClick = e => {
@@ -49,7 +49,6 @@ function GUIWindow(props) {
     
     const handleWindowResize = e => {
         if(resizing) {
-            const guiWindowWidth = e.currentTarget.parentElement.offsetWidth;
             const newWidth = dimensions.width += (e.clientX - mousePosition.x);
             const newHeight = dimensions.height += (e.clientY - mousePosition.y);
             setDimensions({
