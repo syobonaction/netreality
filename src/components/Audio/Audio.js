@@ -1,4 +1,5 @@
 import React, { useState, useRef }  from 'react';
+import GUIWindow from '../GUIWindow/GUIWindow';
 import './Audio.scss';
 
 function Audio(props) {
@@ -45,33 +46,42 @@ function Audio(props) {
         }
     };
 
-    const handleVolumeDecreaseClick = (type) => {
+    const handleVolumeDecreaseClick = () => {
         if(audioPlayer.current.volume > 0.1) {
             audioPlayer.current.volume -= 0.1;
         }
     };
 
     return (
-        <div className="audio_container">
-            <div className="audio_title">
-                <marquee>{currentSong.title}</marquee>
+        <GUIWindow
+            width="300"
+            height="100"
+            top="120px"
+            left="600px"
+            bgcolor="lightgray"
+            onClose={props.onClose}
+        >
+            <div className="audio_container">
+                <div className="audio_title">
+                    <marquee>{currentSong.title}</marquee>
+                </div>
+                <audio ref={audioPlayer} autoPlay loop>
+                    <source 
+                        src={currentSong.url}
+                        type="audio/mpeg"
+                    />
+                    Your browser does not support the audio element.
+                </audio>
+                <div className="audio_controls">
+                    <button onClick={handlePlayClick}>Play</button> 
+                    <button onClick={handlePauseClick}>Pause</button>
+                    <button onClick={handleBackClick}>Back</button>
+                    <button onClick={handleNextClick}>Next</button>
+                    <button onClick={handleVolumeIncreaseClick}>+</button> 
+                    <button onClick={handleVolumeDecreaseClick}>-</button>
+                </div>
             </div>
-            <audio ref={audioPlayer} autoPlay loop>
-                <source 
-                    src={currentSong.url}
-                    type="audio/mpeg"
-                />
-                Your browser does not support the audio element.
-            </audio>
-            <div className="audio_controls">
-                <button onClick={handlePlayClick}>Play</button> 
-                <button onClick={handlePauseClick}>Pause</button>
-                <button onClick={handleBackClick}>Back</button>
-                <button onClick={handleNextClick}>Next</button>
-                <button onClick={handleVolumeIncreaseClick}>+</button> 
-                <button onClick={handleVolumeDecreaseClick}>-</button>
-            </div>
-        </div>
+        </GUIWindow>
     );
 }
 

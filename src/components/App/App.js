@@ -1,60 +1,70 @@
-import React, { useEffect, useState } from 'react';
-import GUIWindow from '../GUIWindow/GUIWindow';
+import React, { useEffect, useState, useRef} from 'react';
 import Icon from '../Icon/Icon';
 import Audio from '../Audio/Audio';
+import Blog from '../Blog/Blog';
 import * as musicList from '../../data/musicList.json';
 import './App.css';
 
 function App() {
-    const handleAppClose = callback => {
-        callback(null);
+    const blogApp = <Blog 
+        key="blog_app_01"
+        header="I'm here. I'm glad you're there."
+        image={{
+            alt: "birds flying in the sunset",
+            src: "img/birds.gif"
+        }}
+        text="I hear the birds singing in the courtyard. Suddenly, I want to go outside."
+        onClose={() => handleAppClose("blogApp")}
+    />;
+    const musicApp = <Audio 
+        key="music_app_01" 
+        musicList={musicList} 
+        onClose={() => handleAppClose("musicApp")}
+    />;
+
+    let appList = {
+        blogApp,
+        musicApp
+    };
+    const [apps, setApps] = useState([]);
+    const [runningApps, setRunningApps] = useState([]);
+
+    const handleAppClose = app => {
+        if(runningApps.indexOf(app) >= 0) {
+            if(runningApps.length <= 1) {
+                setRunningApps([]);
+            } else {
+                const index = runningApps.indexOf(app) - 1;
+                let runningAppsRef = runningApps.splice(index, 1);
+                setRunningApps(runningAppsRef);
+            }
+        }
     };
 
-    const [ testApp, setTestApp ] = useState(<GUIWindow 
-        key="test_app_01"
-        width="400"
-        height="600"
-        top="150px"
-        left="20px"
-        content={
-        <div>
-            <h1>I'm here. I'm glad you're there.</h1>
-            <div className="image_container">
-                <img src="img/birds.gif"/>
-            </div>
-            <div className="window_text">
-                I hear the bird's singing in the courtyard. Suddenly, I want to go outside.
-            </div>
-        </div>
+    const handleIconDoubleClick = app => {
+        if(runningApps.indexOf(app) < 0) {
+            setRunningApps([...runningApps, app]);
         }
-        onClose={() => handleAppClose(setTestApp)}
-    />);
-
-    const [ audioApp, setAudioApp ] = useState(<GUIWindow 
-            key="audio_app_01"
-            width="300"
-            height="100"
-            top="120px"
-            left="600px"
-            bgcolor="lightgray"
-            content={
-            <Audio 
-                musicList={musicList}
-            />}
-            onClose={() => handleAppClose(setAudioApp)}>
-        </GUIWindow>);
-
-    const [apps, setApps] = useState([]);
+    };
 
     useEffect(() => {
-        setApps([testApp, audioApp]);
-    }, [audioApp, testApp]);
+        const newAppList = runningApps.map(app => {
+            return appList[app];
+        });
+        setApps(newAppList);
+    }, [runningApps]);
 
     return (
         <div>
             <Icon 
                 imageUrl="./img/icons/blog.png"
                 name="Sismondi's Blog"
+                onDoubleClick={() => handleIconDoubleClick("blogApp")}
+            />
+            <Icon 
+                imageUrl="./img/icons/audio.png"
+                name="Music Player"
+                onDoubleClick={() => handleIconDoubleClick("musicApp")}
             />
             {apps}
         </div>

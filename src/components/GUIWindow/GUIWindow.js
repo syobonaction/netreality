@@ -51,7 +51,7 @@ function GUIWindow(props) {
         top: position.y,
         width: dimensions.width,
         height: dimensions.height,
-        backgroundColor: props.bgcolor,
+        backgroundColor: props.bgcolor || "white",
         userSelect: (isResizing || isMoving) ? "none" : "initial",
         zIndex: zIndex
     };
@@ -141,7 +141,7 @@ function GUIWindow(props) {
                 </div>
             </div>
             <div className="window_content">
-                {props.content}
+                {props.children}
             </div>
             <div className="window_resize" style={{...resizeStyles}} onMouseDown={handleResizeClick} onMouseMove={handleWindowResize}></div>
         </div>

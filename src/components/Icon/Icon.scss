@@ -1,12 +1,14 @@
 .icon_container {
     font-family: 'Lucida Console', 'Lucida Sans Regular', sans-serif;
-    position: absolute;
+    user-select: none;
+    position: relative;
     color: white;
     width: 80px;
     text-align: center;
     font-size: 0.8rem;
+    margin: 30px;
 
-    &:after {
+    &:before {
         position: absolute;
         border: 5px solid red;
         width: 100%;

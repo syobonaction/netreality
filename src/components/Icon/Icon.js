@@ -3,7 +3,7 @@ import './Icon.scss';
 
 function Icon(props) {
     return (
-        <div className="icon_container">
+        <div className="icon_container" onDoubleClick={props.onDoubleClick}>
             <div className="icon">
                 <img src={props.imageUrl}></img>
             </div>

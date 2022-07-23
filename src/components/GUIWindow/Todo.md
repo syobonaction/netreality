@@ -8,7 +8,7 @@ Need to figure out how to render what's inside the component tags into window_co
 
 ## Focus
 
-Ajust component z-index on click
+Z-index adjustment is working on click. However, useEffect is attaching and removing the event listeners on initialization.
 
 ## Scrollbar
 
