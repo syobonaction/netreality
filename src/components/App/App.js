@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState } from 'react';
+import * as musicList from '../../data/musicList.json';
 import Icon from '../Icon/Icon';
 import Audio from '../Audio/Audio';
 import Blog from '../Blog/Blog';
-import * as musicList from '../../data/musicList.json';
-import './App.scss';
+import World from '../World/World';
 import IconSpace from '../IconSpace/IconSpace';
+import './App.scss';
 
 function App() {
     const blogApp = <Blog 
@@ -31,11 +32,16 @@ function App() {
             onDoubleClick={() => {}}
         />
     </IconSpace>;
+    const brightHouse = <World 
+        key="bright_house_01"
+        onClose={() => handleAppClose("brightHouse")}
+    />;
 
     let appList = {
         blogApp,
         musicApp,
-        myFiles
+        myFiles,
+        brightHouse
     };
 
     const [apps, setApps] = useState([]);
@@ -83,6 +89,11 @@ function App() {
                 imageUrl="./img/icons/folder.png"
                 name="My Files"
                 onDoubleClick={() => handleIconDoubleClick("myFiles")}
+            />
+            <Icon 
+                imageUrl="./img/icons/folder.png"
+                name="Bright House"
+                onDoubleClick={() => handleIconDoubleClick("brightHouse")}
             />
             {apps}
         </div>
