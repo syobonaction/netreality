@@ -9,11 +9,9 @@ function GUIWindow(props) {
 
     useEffect(() => {
         if (guiWindow && guiWindow.current) {
-            console.log('adding');
             document.addEventListener('mousedown', handleWindowClickOutisde);
       
             return () => {
-                console.log('removed the listener');
                 document.removeEventListener('mousedown', handleWindowClickOutisde);
             }
           }
@@ -27,8 +25,8 @@ function GUIWindow(props) {
     const [zIndex, setZIndex] = useState(3);
 
     const [position, setPosition] = useState({
-        x: parseInt(props.left),
-        y: parseInt(props.top)
+        x: parseInt(props.left) || 0,
+        y: parseInt(props.top) || 0
     });
 
     const [isResizing, setIsResizing] = useState(false);
@@ -47,8 +45,8 @@ function GUIWindow(props) {
     });
 
     const guiStyles = {
-        left: position.x,
-        top: position.y,
+        left: position.x || 0,
+        top: position.y || 0,
         width: dimensions.width,
         height: dimensions.height,
         backgroundColor: props.bgcolor || "white",

@@ -3,7 +3,8 @@ import Icon from '../Icon/Icon';
 import Audio from '../Audio/Audio';
 import Blog from '../Blog/Blog';
 import * as musicList from '../../data/musicList.json';
-import './App.css';
+import './App.scss';
+import IconSpace from '../IconSpace/IconSpace';
 
 function App() {
     const blogApp = <Blog 
@@ -21,11 +22,22 @@ function App() {
         musicList={musicList} 
         onClose={() => handleAppClose("musicApp")}
     />;
+    const myFiles = <IconSpace 
+        key="my_files_01"
+        onClose={() => handleAppClose("myFiles")}>
+        <Icon 
+            imageUrl="./img/icons/folder.png"
+            name="Don't Click This"
+            onDoubleClick={() => {}}
+        />
+    </IconSpace>;
 
     let appList = {
         blogApp,
-        musicApp
+        musicApp,
+        myFiles
     };
+
     const [apps, setApps] = useState([]);
     const [runningApps, setRunningApps] = useState([]);
 
@@ -34,8 +46,9 @@ function App() {
             if(runningApps.length <= 1) {
                 setRunningApps([]);
             } else {
-                const index = runningApps.indexOf(app) - 1;
-                let runningAppsRef = runningApps.splice(index, 1);
+                let runningAppsRef = [...runningApps];
+                const index = runningAppsRef.indexOf(app);
+                runningAppsRef.splice(index, 1);
                 setRunningApps(runningAppsRef);
             }
         }
@@ -55,7 +68,7 @@ function App() {
     }, [runningApps]);
 
     return (
-        <div>
+        <div className="app_container">
             <Icon 
                 imageUrl="./img/icons/blog.png"
                 name="Sismondi's Blog"
@@ -65,6 +78,11 @@ function App() {
                 imageUrl="./img/icons/audio.png"
                 name="Music Player"
                 onDoubleClick={() => handleIconDoubleClick("musicApp")}
+            />
+            <Icon 
+                imageUrl="./img/icons/folder.png"
+                name="My Files"
+                onDoubleClick={() => handleIconDoubleClick("myFiles")}
             />
             {apps}
         </div>
