@@ -1,0 +1,130 @@
+/* REMOVE DEFAULT STYLES */
+.beatmaker_container {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: rgb(0, 0, 0);
+
+    .sequence {
+      display: flex;
+    }
+  }
+  
+  /* FONT MAIN */
+  body {
+    font-family: sans-serif;
+    color: white;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  i,
+  svg {
+    pointer-events: none;
+  }
+  
+  /* REMOVE BACKGROUND COLOR ON MUTE ICON */
+  i {
+    background: none;
+  }
+  
+  /* CENTER SEQUENCER */
+  .sequencer {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* PAD AND TEXT STYLES */
+  .hihat-track,
+  .snare-track,
+  .kick-track {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    justify-content: space-between;
+    margin-top: 2rem;
+  }
+  
+  /* ALIGN CONTROL BUTTONS */
+  .controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex: 1;
+    margin: 0rem 2rem;
+  }
+  
+  /* CONTROL BUTTON STYLING */
+  .controls button {
+    padding: 1rem;
+    border: none;
+    background: rgb(216, 206, 206);
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.5s ease;
+  }
+  
+  /* PLAY BUTTON */
+  .play {
+    padding: 1rem;
+    font-size: 1.5rem;
+    border: none;
+    background: rgb(216, 206, 206);
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    margin-top: 3rem;
+  }
+  
+  /* DRUM SELECTION DROPDOWN STYLING */
+  select {
+    padding: 1rem;
+    font-size: 1rem;
+    color: white;
+  }
+  
+  /* MUTE BUTTON COLOR CHANGE */
+  .mute.active {
+    background: rgb(77, 77, 77);
+  }
+  
+  /* TEMPO SLIDER STYLING */
+  .tempo {
+    margin: 3rem;
+    width: 30%;
+  }
+  
+  .tempo-slider {
+    padding: 0.2rem;
+    -webkit-appearance: none;
+    margin: 1rem 0rem;
+    width: 100%;
+    position: relative;
+    background: white;
+    cursor: pointer;
+    border-radius: 1rem;
+  }
+  
+  .tempo p {
+    font-size: 1.5rem;
+    margin: 2rem;
+    text-align: center;
+  }
+  
+  /* PAD ANIMATION */
+  @keyframes playTrack {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.2);
+    }
+  }
+  
