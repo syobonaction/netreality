@@ -1,0 +1,10 @@
+.pad_container {
+    .pad {
+        width: 2rem;
+        height: 2rem;
+        margin: 1rem 0.5rem;
+        cursor: pointer;
+        transition: all 0.5s ease;
+        border-radius: 10px;
+    }
+}
