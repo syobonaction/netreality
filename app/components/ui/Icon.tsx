@@ -22,7 +22,7 @@ export default function Icon(props:IconProps) {
       active:before:w-[32px]
       active:before:h-[32px]
       active:before:bg-blue-900/65
-      ">
+    ">
       <div>
         <Image 
           className="m-auto" 

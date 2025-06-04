@@ -1,9 +1,14 @@
 import Desktop from "./components/ui/Desktop";
+import Display from "./components/ui/Display";
+import WindowWrapper from "./components/ui/WindowWrapper";
 
 export default function Home() {
   return (
-    <main className="w-screen h-screen">
+    <Display>
       <Desktop />
-    </main>
+      <WindowWrapper>
+        <div>TEST</div>
+      </WindowWrapper>
+    </Display>
   );
 }
