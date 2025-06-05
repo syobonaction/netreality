@@ -1,19 +1,36 @@
+'use client'
+
+import { memo, useState } from "react";
+
 interface WindowWrapperProps {
   children: React.ReactNode
+  pos: {
+    x: number
+    y: number
+  }
+  dim: {
+    w: number
+    h: number
+  }
 }
 
-export default function WindowWrapper({
-  children
+const WindowWrapper = memo(function WindowWrapper({
+  children,
+  pos,
+  dim,
 }: WindowWrapperProps) {
-  const dynamicStyles = {
-        left: 100,
-        top: 100,
-        width: 400,
-        height: 600
-    };
+  const [position, setPosition] = useState({ x: pos.x, y: pos.y })
+  const [size, setSize] = useState({ w: dim.w, h: dim.h })
+
+  const dynamicWindowStyles = {
+    left: position.x,
+    top: position.y,
+    width: size.w,
+    height: size.h
+  }
 
   return (
-    <div id="app_window" style={{...dynamicStyles}} className="
+    <div id="app_window" style={{...dynamicWindowStyles}} className="
       flex
       flex-col
       relative
@@ -94,12 +111,14 @@ export default function WindowWrapper({
       </div>
       <div id="window_resize" className="
         absolute
-        bottom-[-4]
-        right-[-4]
-        w-1
-        h-1
+        bottom-[-6]
+        right-[-6]
+        w-2
+        h-2
         cursor-nwse-resize
       "></div>
     </div>
   )
-}
+})
+
+export default WindowWrapper

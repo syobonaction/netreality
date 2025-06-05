@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <Display>
       <Desktop />
-      <WindowWrapper>
+      <WindowWrapper pos={{x: 100, y: 100}} dim={{w: 400, h: 600}}>
         <div>TEST</div>
       </WindowWrapper>
     </Display>
