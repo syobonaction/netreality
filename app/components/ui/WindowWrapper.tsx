@@ -14,6 +14,8 @@ export default function WindowWrapper({
 
   return (
     <div id="app_window" style={{...dynamicStyles}} className="
+      flex
+      flex-col
       relative
       z-10
       w-20
@@ -24,17 +26,16 @@ export default function WindowWrapper({
       border-gray-300
     ">
       <div id="window_header" className="
+        flex
+        flex-rows
         box-border
-        w-full
-        h-[20px]
+        h-[22px]
         bg-gray-300
         border-1
         border-double
         border-gray-400
       ">
         <div id="close_container" className="
-          relative
-          inline-block
           box-border
           h-[20px]
           w-[20px]
@@ -55,53 +56,48 @@ export default function WindowWrapper({
             before:text-gray-500
             before:content-['\00d7']
             before:text-center
-            before:leading-[11px]
+            before:leading-[12px]
             active:bg-gray-400
-            active:before:leading-[12px]
             active:before:border-1
             active:before:border-solid
-          active:before:border-gray-500
+          active:before:border-gray-400
+          active:before:border-t-gray-500
+          active:before:border-l-gray-500
           "></div>
         </div>
         <div id="bar_container" className="
-          relative
-          inline-block
+          grow
           box-border
-          w-[calc(100%-20px)]
-          h-[20px]
           py-[5px]
           px-[5px]
         ">
           <div id="bar_grabber_hook" className="
-            absolute
+            relative
             w-full
-            h-full
-            top-0
-            cursor-grab
-            active:cursor-grabbing
-          "></div>
-          <div id="bar" className="
-            m-auto
             h-full
             box-border
             border-t-[2px]
             border-t-gray-400
             border-b-[2px]
             border-b-gray-400
+            cursor-grab
+            active:cursor-grabbing
           "></div>
         </div>
       </div>
       <div id="window_content" className="
-        relative
-        w-auto
+        grow
         bg-white
-        h-auto
         p-[5px]
       ">
         {children}
       </div>
       <div id="window_resize" className="
         absolute
+        bottom-[-4]
+        right-[-4]
+        w-1
+        h-1
         cursor-nwse-resize
       "></div>
     </div>
